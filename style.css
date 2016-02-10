@@ -1,7 +1,7 @@
 
 
 #main {
-    width: 950px;
+    width: 1024px;
     margin: 10px auto;
 }
 
@@ -12,10 +12,6 @@
 #logo img {
     width: 240px;
     height: 50px;
-}
-
-#cabecera div {
-    float: left;
 }
 
 #lista1 {
@@ -45,23 +41,28 @@
 
 #contenido {
     background-color: #6fb403;
-    height: 330px;
+    height: 350px;
+    margin-top: 50px;
 }
 
-h2 {
-    color: white;
+#contenido h2 {
     text-align: center;
-    padding-top: 15px;
+    padding-top: 30px;
     margin-top: 0px;
+    margin-bottom: 30px;
 }
 
 #contenido1 {
-    padding-left: 20px;
+    padding-left: 150px;
+    margin-bottom: 28px;
 }
 
 #contenido1 li {
     display: inline-block;
-    width: 200px;
+    width: 250px;
+    height: 210px;
+    text-align: center;
+    padding-right: 50px;
 }
 
 #headcont {
@@ -74,30 +75,32 @@ h2 {
 
 #bodycont {
     color: white;
-    font-size: 0.7em;
     padding-left: 12px;
 }
 
 #pie {
     background-color: #595957;
-    height: 100px;
+    height: 130px;
 }
 
 #listapie li {
     display: inline-block;
-    margin-right: 30px;
+    margin-right: 60px;
     margin-top: 25px;
 }
 
 #contpie {
     color: white;
-    font-weight: bold;
-    font-size: 0.6em;
     text-align: center;
 }
 
 #iconpie {
     text-align: center;
+}
+
+#iconpie img {
+  width: 50px;
+  height: 50px;
 }
 
 #contpie p {
@@ -108,23 +111,23 @@ h2 {
 #listapie {
     margin-bottom: 0px;
     margin-top: 0px;
-    padding-left: 30px;
+    padding-left: 60px;
 }
 
 #boton img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+    width: 230px;
+    height: 30px;
+    margin-top: 5px;
 }
 
 #boton {
     color: white;
     text-align: center;
     font-size: 0.7em;
-    background-color: #6fb403;
+    background-color: white;
     width: 250px;
     height: 40px;
-    margin-left: 200px;
+    margin-left: 387px;
     position: relative;
     border-radius: 20px;
 }

@@ -49,7 +49,7 @@
         </div>
       </div>
         <div id="contenido">
-            <h2>PRODUCTOS</h2>
+            <h2>CARBONES</h2>
             <ul id="contenido1">
                 <li><a href="cachimba.php"><div>
                 <img src="img/hookah.png" width="120px" height="120px"/>
