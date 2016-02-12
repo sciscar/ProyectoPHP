@@ -11,6 +11,50 @@
     <link rel="shortcut icon" href="img/icono.png" type="image/png">
   </head>
   <body>
+
+  <?php
+    session_start();
+
+    if (isset($_POST["email"])) {
+
+      $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
+
+      if ($connection->connect_errno) {
+          printf("Connection failed: %s\n", $connection->connect_error);
+          exit();
+      }
+
+      $query = $connection->prepare("SELECT * FROM usuario
+        WHERE correo=? AND password=md5(?)");
+
+      $query->bind_param("ss",$_POST["email"],$_POST["password"]);
+
+      if ($query->execute()) {
+
+        $query->store_result();
+
+          if ($query->num_rows===0) {
+
+            echo "<div class='alert alert-danger' style='text-align: center'>";
+            echo "<strong>Error!</strong> Usuario y/o Contraseña introducidos no validos";
+            echo "</div>";
+
+          } else {
+
+            $_SESSION["email"]=$_POST["email"];
+            $_SESSION["language"]="es";
+
+            header("Location: index.php");
+          }
+      } else {
+        echo "Wrong Query";
+        var_dump($consulta);
+      }
+  }
+
+
+  ?>
+
     <div id="main">
         <div id="cabecera">
             <div id="logo"><img src="img/logo.png"/></div>
@@ -33,16 +77,58 @@
                           </ul>
                       </li>
                   </ul>
-                    <form id="signin" class="navbar-form navbar-right" role="form">
-                      <div class="input-group">
-                        <input id="email" type="email" class="form-control" name="email" value="" placeholder="Email">
-                      </div>
-                      <div class="input-group">
-                        <input id="password" type="password" class="form-control" name="password" value="" placeholder="Contraseña">
-                      </div>
-                      <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>
-                      <a href="registro.php" class="btn btn-primary" role="button">Registrate</a>
-                   </form>
+
+<?php if (!isset($_SESSION["email"])) : ?>
+
+<form id="login" class="navbar-form navbar-right" role="form" method="post" action="index.php">
+  <div class="input-group">
+    <input id="email" type="email" class="form-control" name="email" placeholder="Email">
+  </div>
+  <div class="input-group">
+    <input id="password" type="password" class="form-control" name="password" placeholder="Contraseña">
+  </div>
+  <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>
+  <a href="registro.php" class="btn btn-primary" role="button">Registrate</a>
+</form>
+
+<?php else: ?>
+
+<ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <strong>Nombre</strong>
+        <span class="glyphicon glyphicon-chevron-down"></span>
+      </a>
+        <ul class="dropdown-menu">
+          <li>
+          <div class="navbar-login">
+              <div class="row">
+                  <div class="col-lg-12">
+                      <p class="text-left"><strong>Nombre Apellido</strong></p>
+                      <p class="text-left">
+                          <a href="perfil.php" class="btn btn-primary btn-block">Perfil</a>
+                      </p>
+                  </div>
+              </div>
+          </div>
+          </li>
+            <li class="divider"></li>
+              <li>
+                <div class="navbar-login navbar-login-session">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <p>
+                          <a href="logout.php" class="btn btn-danger btn-block">Cerrar Sesion</a>
+                      </p>
+                  </div>
+                  </div>
+                </div>
+              </li>
+          </ul>
+        </li>
+      </ul>
+
+<?php endif ?>
                   </div>
                 </div>
               </nav>
