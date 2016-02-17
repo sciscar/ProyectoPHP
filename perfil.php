@@ -43,7 +43,6 @@
 
             $_SESSION["email"]=$_POST["email"];
             $_SESSION["language"]="es";
-
             header("Location: index.php");
           }
       } else {
@@ -73,7 +72,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">0</span></a>
                           <ul class="dropdown-menu dropdown-cart" role="menu">
                             <li class="divider"></li>
-                            <li><a class="text-center" href="pedido.php">Ver Carro</a></li>
+                            <li><a class="text-center" href="">Ver Carro</a></li>
                           </ul>
                       </li>
                   </ul>
@@ -145,33 +144,111 @@
         </div>
       </div>
         <div id="contenido">
-            <h2>PRODUCTOS</h2>
-            <ul id="contenido1">
-                <li><a href="cachimba.php"><div>
-                <img src="img/hookah.png" width="120px" height="120px"/>
-                </div>
-                    <div><a href="cachimba.php">
-                        <p id="headcont">CACHIMBAS</p>
-                        <p id="bodycont">Primeras marcas en cachimbas de alta calidad</p>
-                    </div></a>
-                </li>
-                <li><a href="carbones.php"><div>
-                <img src="img/carbon.jpg"/ width="120px" height="120px">
-                </div>
-                    <div>
-                        <p id="headcont">CARBONES</p>
-                        <p id="bodycont">Carbones naturales de gran calidad</p>
-                    </div></a>
-                </li>
-                <li><a href="accesorios.php"><div>
-                <img src="img/cazoleta.png"/ width="120px" height="120px">
-                </div>
-                    <div>
-                        <p id="headcont">ACCESORIOS</p>
-                        <p id="bodycont">Mangueras, cazoletas, pinzas, hornillos, etc..</p>
-                    </div></a>
-                </li>
-            </ul>
+              <form id="perfil" method="post" action="actualizarperfil.php">
+              <div class="container-fluid">
+                  <section class="container" style="margin-top: 15px">
+                  <div class="container-page">
+                    <div class="col-md-6">
+
+                      <div class="form-group col-lg-6">
+                        <label>Email (*)</label>
+                        <input type="Email" name="Email" class="form-control" id="Email" value="<?php echo $_SESSION["email"]; ?>" required>
+                      </div>
+
+                      <div class="form-group col-lg-6">
+                        <label>Contraseña (*)</label>
+                        <input type="password" name="password" class="form-control" id="password" value="" required>
+                      </div>
+
+                      <div class="form-group col-lg-6">
+                        <label>Nombre (*)</label>
+                        <input type="text" name="nombre" class="form-control" id="nombre" value="" required>
+                      </div>
+
+                      <div class="form-group col-lg-6">
+                        <label>Apellidos (*)</label>
+                        <input type="text" name="apellidos" class="form-control" id="apellidos" value="" required>
+                      </div>
+
+                      <div class="form-group col-lg-6">
+                        <label>Ciudad (*)</label>
+                        <select class="form-control" id="ciudad" name="ciudad" required>
+                          <option value='selecciona'>Selecciona</option>
+                          <option value='ACoruna' >A Coruña</option>
+                          <option value='Alava'>Álava</option>
+                          <option value='Albacete' >Albacete</option>
+                          <option value='Alicante'>Alicante</option>
+                          <option value='Almeria' >Almería</option>
+                          <option value='Asturias' >Asturias</option>
+                          <option value='Avila' >Ávila</option>
+                          <option value='Badajoz' >Badajoz</option>
+                          <option value='Barcelona'>Barcelona</option>
+                          <option value='Burgos' >Burgos</option>
+                          <option value='Caceres' >Cáceres</option>
+                          <option value='Cadiz' >Cádiz</option>
+                          <option value='Cantabria' >Cantabria</option>
+                          <option value='Castellon' >Castellón</option>
+                          <option value='Ceuta' >Ceuta</option>
+                          <option value='CiudadReal' >Ciudad Real</option>
+                          <option value='Cordoba' >Córdoba</option>
+                          <option value='Cuenca' >Cuenca</option>
+                          <option value='Gerona' >Gerona</option>
+                          <option value='Girona' >Girona</option>
+                          <option value='LasPalmas' >Las Palmas</option>
+                          <option value='Granada' >Granada</option>
+                          <option value='Guadalajara' >Guadalajara</option>
+                          <option value='Guipuzcoa' >Guipúzcoa</option>
+                          <option value='Huelva' >Huelva</option>
+                          <option value='Huesca' >Huesca</option>
+                          <option value='Jaen' >Jaén</option>
+                          <option value='LaRioja' >La Rioja</option>
+                          <option value='Leon' >León</option>
+                          <option value='Lleida' >Lleida</option>
+                          <option value='Lugo' >Lugo</option>
+                          <option value='Madrid' >Madrid</option>
+                          <option value='Malaga' >Málaga</option>
+                          <option value='Mallorca' >Mallorca</option>
+                          <option value='Melilla' >Melilla</option>
+                          <option value='Murcia' >Murcia</option>
+                          <option value='Navarra' >Navarra</option>
+                          <option value='Orense' >Orense</option>
+                          <option value='Palencia' >Palencia</option>
+                          <option value='Pontevedra'>Pontevedra</option>
+                          <option value='Salamanca'>Salamanca</option>
+                          <option value='Segovia' >Segovia</option>
+                          <option value='Sevilla' >Sevilla</option>
+                          <option value='Soria' >Soria</option>
+                          <option value='Tarragona' >Tarragona</option>
+                          <option value='Tenerife' >Tenerife</option>
+                          <option value='Teruel' >Teruel</option>
+                          <option value='Toledo' >Toledo</option>
+                          <option value='Valencia' >Valencia</option>
+                          <option value='Valladolid' >Valladolid</option>
+                          <option value='Vizcaya' >Vizcaya</option>
+                          <option value='Zamora' >Zamora</option>
+                          <option value='Zaragoza'>Zaragoza</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group col-lg-6">
+                        <label>Direccion (*)</label>
+                        <input type="text" name="direccion" class="form-control" id="direccion" required>
+                      </div>
+
+                      <div class="form-group col-lg-6">
+                        <label>Telefono</label>
+                        <input type="text" name="telefono" class="form-control" id="telefono" maxlength="9">
+                      </div>
+
+                      <p><button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+                      <p>Las casillas marcadas con (*) son obligatorias.
+
+                    </div>
+
+                  </div>
+                </section>
+              </div>
+            </form>
             <div id="boton"><img src="img/logo.png"/></div>
         </div>
         <div id="pie">
