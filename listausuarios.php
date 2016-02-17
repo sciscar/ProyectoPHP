@@ -52,8 +52,8 @@
                 echo "<td>".$obj->ciudad."</td>";
                 echo "<td>".$obj->telefono."</td>";
                 echo "<td>".$obj->permisos."</td>";
-                echo "<td><a  href='editarusuario.php?id=$obj->id_usuario&nombre=$obj->nombre&apellidos=$obj->apellidos&correo=$obj->correo&direccion=$obj->direccion&ciudad=$obj->ciudad&telefono=$obj->telefono'><button type='button' class='btn btn-primary'>Editar</button></a></td>";
-                echo "<td><a href='borrarusuario.php?id=$obj->id_usuario&nombre=$obj->nombre&apellidos=$obj->apellidos&correo=$obj->correo&direccion=$obj->direccion&ciudad=$obj->ciudad&telefono=$obj->telefono'><button type='button' class='btn btn-danger'>Borrar</button></a></td>";
+                echo "<td><a href='editarusuario.php?id=$obj->id_usuario'><button type='button' class='btn btn-primary'>Editar</button></a></td>";
+                echo "<td><a href='borrarusuario.php?id=$obj->id_usuario'><button type='button' class='btn btn-danger'>Borrar</button></a></td>";
                 echo "</tr>";
             }
 

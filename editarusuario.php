@@ -11,71 +11,65 @@
     <link rel="shortcut icon" href="img/icono.png" type="image/png">
   </head>
   <body>
-    <?php  if (!isset($_POST['id'])) : ?>
 
-      <h3 style="margin-bottom: 10px">Datos del Usuario</h3>
-      <form method="post" action="editarusuario.php">
-      <table>
+    <?php if (isset($_GET['id'])) {
 
-      <?php
-        $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
-        if ($connection->connect_errno) {
-          printf("Connection failed: %s\n", $mysqli->connect_error);
-          exit();
-        }
+          $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
 
-        $id = $_GET['id'];
-        $nombre = $_GET['nombre'];
-        $apellidos = $_GET['apellidos'];
-        $correo = $_GET['correo'];
-        $direccion = $_GET['direccion'];
-        $ciudad = $_GET['ciudad'];
-        $telefono = $_GET["telefono"];
-
-
-    echo '<tr><td>Id Usuario</td><td><input type="text" name="Id" style="margin-bottom: 5px" value="'.$id.'" disabled></td></tr>
-          <tr><td>Nombre</td><td><input type="text" name="Matricula" style="margin-bottom: 5px" value="'.$matricula.'" disabled></td></tr>
-          <tr><td>Apellidos</td><td><input type="date" name="FechaIn" style="margin-bottom: 5px" value="'.$fechain.'"></td></tr>
-          <tr><td>Correo</td><td><input type="number" name="Km" style="margin-bottom: 5px" value="'.$km.'"></td></tr>
-          <tr><td>Direccion</td><td><input type="text" size="100" name="Averia" style="margin-bottom: 5px" value="'.$averia.'"></td></tr>
-          <tr><td>Ciudad</td><td><input type="date" name="FechaOut" style="margin-bottom: 5px" value="'.$fechaout.'"></td></tr>
-          <tr><td>Telefono</td><td><input type="text" size="100" name="Observaciones" style="margin-bottom: 5px" value="'.$observ.'"></td></tr>
-      <tr><td></td><td><input type="submit" style="margin-bottom: 5px"></td></tr>
-      </table>
-      </form>';
-
-      ?>
-
-      <?php else: ?>
-
-          <?php
-
-          $id = $_POST['Id'];
-          $nombre = $_POST['nombre'];
-          $apellidos = $_POST['apellidos'];
-          $correo = $_POST['correo'];
-          $direccion = $_POST['direccion'];
-          $ciudad = $_POST['ciudad'];
-          $telefono = $_POST["telefono"];
-
-              $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
-              if ($connection->connect_errno) {
-                  printf("Connection failed: %s\n", $connection->connect_error);
-                  exit();
+            if ($connection->connect_errno) {
+                printf("Conexion fallida: %s\n", $mysqli->connect_error);
+                exit();
               }
+                /* Consultas de selección que devuelven un conjunto de resultados */
+                if ($result = $connection->query("SELECT * FROM usuario WHERE id_usuario=".$_GET['id'])) {
 
-              $q="UPDATE usuario SET id_usuario='".$id ."',Matricula='".$matricul."', FechaEntrada='".$fechain."', Km='".$km."', Averia='".$averia."' ,FechaSalida='".$fechaout."' ,Observaciones='".$observ."' WHERE IdReparacion=$id";
+                  while($obj = $result->fetch_object()) {
+                                      //PRINTING EACH ROW
 
-              $result=$connection->query($q);
+                      echo "<div class='col-md-6'>";
+                      echo "<form action='editarusuario.php' method='post'>";
+                      echo "<div class='form-group col-lg-6'>Id Usuario <input class='form-control' type='number' name='id' required value='".$obj->id_usuario."' readonly></div>";
+                      echo "<div class='form-group col-lg-6'>Permisos: <select class='form-control' name='permiso' required>";
+                      echo "<option value='user'>User</option>";
+                      echo "<option value='Admin'>Admin</option>";
+                      echo "</select>";
+                      echo "</div>";
+                      echo "<div class='form-group col-lg-6'>Nombre: <input class='form-control' type='text' name='nombre' required value='".$obj->nombre."'></div>";
+                      echo "<div class='form-group col-lg-6'>Apellidos: <input class='form-control' type='text' name='apellidos' required value='".$obj->apellidos."'></div>";
+                      echo "<div class='form-group col-lg-6'>Correo: <input class='form-control' type='email' name='correo' required value='".$obj->correo."'></div>";
+                      echo "<div class='form-group col-lg-6'>Direccion: <input class='form-control' type='text' name='direccion' required value='".$obj->direccion."'></div>";
+                      echo "<div class='form-group col-lg-6'>Ciudad: <input class='form-control' type='text' name='ciudad' required value='".$obj->ciudad."'></div>";
+                      echo "<div class='form-group col-lg-6'>Telefono: <input class='form-control' type='text' name='telefono' value='".$obj->telefono."'></div>";
+                      echo "<div class='form-group col-lg-6'><input class='form-control' type='submit' name='guardar' value='Editar'></div>";
+                      echo "</form>";
+                      echo "<a href='listausuarios.php'><button type='button' class='btn btn-danger'>Cancelar</button>";
+                      echo "</div>";
+                      echo "</div>";
+                        }
 
-              if (!$result) {
-                  echo ERROR;
-              }
+                            $result->close();
+                            unset($obj);
+                            unset($connection);
+                              }
+                                }
+                          if (isset($_POST["guardar"])){
 
-              unset($connection);
-              header("Location: reparaciones.php");
-          ?>
-      <?php endif ?>
-      <a href="listausuarios.php"><button type="button" class="btn btn-danger">Cancelar</button>
+                              $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
+
+                                  if ($connection->connect_errno) {
+                                    printf("Conexion fallida: %s\n", $mysqli->connect_error);
+                                    exit();
+                                  }
+
+                                $consulta="UPDATE usuario SET id_usuario='".$_POST['id']."', permisos='".$_POST['permiso']."',nombre='".$_POST['nombre']."',apellidos='".$_POST['apellidos']."',correo='".$_POST['correo']."',telefono='".$_POST['telefono']."',direccion='".$_POST['direccion']."' WHERE id_usuario='".$_POST['id']."';";
+                                   if ($connection->query($consulta)) {
+                                     echo "<div class='alert alert-success'><strong>¡Hecho!</strong> La accion se ha realizado con exito.</div>";
+                                    }
+                                     $connection->close();
+                                    header("refresh:3; url=listausuarios.php");
+
+                                    }
+                                      ?>
+
   </body>
-</html>
+  </html>
