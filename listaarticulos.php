@@ -49,8 +49,8 @@
                 echo "<td>".$obj->precio."</td>";
                 echo "<td>".$obj->descripcion."</td>";
                 echo "<td>".$obj->marca."</td>";
-                echo "<td><button type='button' class='btn btn-primary' href='editar.php?id=$obj->id_producto&nombreprod=$obj->nombreprod&tipo=$obj->tipo&precio=$obj->precio&descripcion=$obj->descripcion&marca=$obj->marca'>Editar</button></td>";
-                echo "<td><button type='button' class='btn btn-danger' href='editar.php?id=$obj->id_producto&nombreprod=$obj->nombreprod&tipo=$obj->tipo&precio=$obj->precio&descripcion=$obj->descripcion&marca=$obj->marca'>Borrar</button></td>";
+                echo "<td><a href='editararticulo.php?id=$obj->id_producto'><button type='button' class='btn btn-primary'>Editar</button></a></td>";
+                echo "<td><a href='borrararticulo.php?id=$obj->id_producto'><button type='button' class='btn btn-danger'>Borrar</button></a></td>";
                 echo "</tr>";
             }
 

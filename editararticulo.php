@@ -21,28 +21,27 @@
                 exit();
               }
                 /* Consultas de selección que devuelven un conjunto de resultados */
-                if ($result = $connection->query("SELECT * FROM usuario WHERE id_usuario=".$_GET['id'])) {
+                if ($result = $connection->query("SELECT * FROM producto WHERE id_producto=".$_GET['id'])) {
 
                   while($obj = $result->fetch_object()) {
                                       //PRINTING EACH ROW
 
                       echo "<div class='col-md-6'>";
-                      echo "<form action='editarusuario.php' method='post'>";
-                      echo "<div class='form-group col-lg-6'>Id Usuario <input class='form-control' type='number' name='id' required value='".$obj->id_usuario."' readonly></div>";
-                      echo "<div class='form-group col-lg-6'>Permisos: <select class='form-control' name='permiso' required>";
-                      echo "<option value='user'>User</option>";
-                      echo "<option value='Admin'>Admin</option>";
+                      echo "<form action='editararticulo.php' method='post'>";
+                      echo "<div class='form-group col-lg-6'>Id Producto <input class='form-control' type='number' name='id' required value='".$obj->id_producto."' readonly></div>";
+                      echo "<div class='form-group col-lg-6'>Nombre: <input class='form-control' type='text' name='nombre' required value='".$obj->nombreprod."'></div>";
+                      echo "<div class='form-group col-lg-6'>Tipo: <select class='form-control' name='tipo' required>";
+                      echo "<option value='cachimba'>Cachimba</option>";
+                      echo "<option value='carbon'>Carbon</option>";
+                      echo "<option value='accesorio'>Accesorio</option>";
                       echo "</select>";
                       echo "</div>";
-                      echo "<div class='form-group col-lg-6'>Nombre: <input class='form-control' type='text' name='nombre' required value='".$obj->nombre."'></div>";
-                      echo "<div class='form-group col-lg-6'>Apellidos: <input class='form-control' type='text' name='apellidos' required value='".$obj->apellidos."'></div>";
-                      echo "<div class='form-group col-lg-6'>Correo: <input class='form-control' type='email' name='correo' required value='".$obj->correo."'></div>";
-                      echo "<div class='form-group col-lg-6'>Direccion: <input class='form-control' type='text' name='direccion' required value='".$obj->direccion."'></div>";
-                      echo "<div class='form-group col-lg-6'>Ciudad: <input class='form-control' type='text' name='ciudad' required value='".$obj->ciudad."'></div>";
-                      echo "<div class='form-group col-lg-6'>Telefono: <input class='form-control' type='text' name='telefono' value='".$obj->telefono."'></div>";
+                      echo "<div class='form-group col-lg-6'>Precio: <input class='form-control' type='number' name='precio' required value='".$obj->precio."'></div>";
+                      echo "<div class='form-group col-lg-6'>Descripcion: <input class='form-control' type='text' name='descripcion' required value='".$obj->descripcion."'></div>";
+                      echo "<div class='form-group col-lg-6'>Marca: <input class='form-control' type='text' name='marca' required value='".$obj->marca."'></div>";
                       echo "<div class='form-group col-lg-6'><input class='form-control' type='submit' name='guardar' value='Editar'></div>";
                       echo "</form>";
-                      echo "<a href='listausuarios.php'><button type='button' class='btn btn-danger'>Cancelar</button>";
+                      echo "<a href='listaarticulos.php'><button type='button' class='btn btn-danger'>Cancelar</button>";
                       echo "</div>";
                       echo "</div>";
                         }
@@ -61,12 +60,12 @@
                                     exit();
                                   }
 
-                                $consulta="UPDATE usuario SET id_usuario='".$_POST['id']."', permisos='".$_POST['permiso']."',nombre='".$_POST['nombre']."',apellidos='".$_POST['apellidos']."',correo='".$_POST['correo']."',telefono='".$_POST['telefono']."',direccion='".$_POST['direccion']."' WHERE id_usuario='".$_POST['id']."';";
+                                $consulta="UPDATE producto SET id_producto='".$_POST['id']."', nombreprod='".$_POST['nombre']."',tipo='".$_POST['tipo']."',precio='".$_POST['precio']."',descripcion='".$_POST['descripcion']."',marca='".$_POST['marca']."' WHERE id_producto='".$_POST['id']."';";
                                    if ($connection->query($consulta)) {
                                      echo "<div class='alert alert-success'><strong>¡Hecho!</strong> La accion se ha realizado con exito.</div>";
                                     }
                                      $connection->close();
-                                    header("refresh:2; url=listausuarios.php");
+                                    header("refresh:2; url=listaarticulos.php");
 
                                     }
                                       ?>

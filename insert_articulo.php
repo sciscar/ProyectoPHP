@@ -10,7 +10,7 @@
             $link = mysql_connect('localhost', 'root', 'solidwork')or die('No se pudo conectar: ' . mysql_error());
             mysql_select_db('hookahsolid') or die('No se pudo seleccionar la base de datos');
 
-            $insert = "INSERT INTO producto VALUE(NULL,'".$_POST['nombre']."'".","."'".$_POST['tipo']."'".","."'".$_POST['precio']."'".","."'".$_POST['descripcion']."'".","."'".$_POST['marca']."'".")";
+            $insert = "INSERT INTO producto VALUE(NULL,'".$_POST['nombreprod']."'".","."'".$_POST['tipo']."'".","."'".$_POST['precio']."'".","."'".$_POST['descripcion']."'".","."'".$_POST['marca']."'".",NULL)";
             $result = mysql_query($insert) or die('Consulta fallida: ' . mysql_error());
             if ($result) {
             echo "Producto Añadido";
@@ -21,7 +21,7 @@
             // Cerrar la conexión
             mysql_close($link);
 
-            header("refresh:5; url=listaarticulos.php");
+            header("refresh:3; url=listaarticulos.php");
     ?>
   </body>
 </html>

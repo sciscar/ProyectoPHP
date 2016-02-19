@@ -19,12 +19,17 @@
 
             <div class="form-group col-lg-6">
     					<label>Nombre (*)</label>
-    					<input type="text" name="nombre" class="form-control" id="nombre" required>
+    					<input type="text" name="nombreprod" class="form-control" id="nombreprod" required>
     				</div>
 
     				<div class="form-group col-lg-6">
     					<label>Tipo (*)</label>
-    					<input type="text" name="tipo" class="form-control" id="tipo" required>
+              <select class="form-control" id="ciudad" name="tipo" required>
+                <option value='selecciona'>Selecciona</option>
+                <option value='cachimba'>Cachimba</option>
+                <option value='carbon'>Carbon</option>
+                <option value='articulo'>Articulo</option>
+              </select>
     				</div>
 
     				<div class="form-group col-lg-6">
