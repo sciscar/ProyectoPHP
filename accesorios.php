@@ -144,82 +144,44 @@
               </nav>
         </div>
       </div>
-        <div id="contenido">
-            <h2>PRODUCTOS</h2>
-            <ul id="contenido1">
-                <li><a href="cachimba.php"><div>
-                <img src="img/hookah.png" width="120px" height="120px"/>
-                </div>
-                    <div><a href="cachimba.php">
-                        <p id="headcont">CACHIMBAS</p>
-                        <p id="bodycont">Primeras marcas en cachimbas de alta calidad</p>
-                    </div></a>
-                </li>
-                <li><a href="carbones.php"><div>
-                <img src="img/carbon.jpg"/ width="120px" height="120px">
-                </div>
-                    <div>
-                        <p id="headcont">CARBONES</p>
-                        <p id="bodycont">Carbones naturales de gran calidad</p>
-                    </div></a>
-                </li>
-                <li><a href="accesorios.php"><div>
-                <img src="img/cazoleta.png"/ width="120px" height="120px">
-                </div>
-                    <div>
-                        <p id="headcont">ACCESORIOS</p>
-                        <p id="bodycont">Mangueras, cazoletas, pinzas, hornillos, etc..</p>
-                    </div></a>
-                </li>
-            </ul>
-            <div id="boton"><img src="img/logo.png"/></div>
-        </div>
-        <div id="pie">
-            <ul id="listapie">
-                <li><a href="index.php">
-                    <div id="iconpie">
-                    <img src="img/productos.png">
-                    </div>
-                    <div id="contpie">Productos<p> </p></div>
-                </a></li>
-                <li><a href="info.php">
-                    <div id="iconpie">
-                    <img src="img/informacion.png">
-                    </div>
-                    <div id="contpie">Información<p> </p></div>
-                </a></li>
-                <li>
-                    <div id="iconpie">
-                    <img src="img/entrega.png">
-                    </div>
-                    <div id="contpie">Entrega en<br/><p>24/48 Horas</p></div>
-                </li>
-                <li>
-                    <div id="iconpie">
-                    <img src="img/envio.png">
-                    </div>
-                    <div id="contpie">Envio Gratis<p>desde 75€</p></div>
-                </li>
-                <li>
-                    <div id="iconpie">
-                    <img src="img/pago.png">
-                    </div>
-                    <div id="contpie">Pago 100%<p>Seguro</p></div>
-                </li>
-                <li>
-                    <div id="iconpie">
-                    <img src="img/calidad.png">
-                    </div>
-                    <div id="contpie">Calidad<p>Asegurada</p></div>
-                </li>
-                <li><a href="contacto.php">
-                    <div id="iconpie">
-                    <img src="img/contacta.png">
-                    </div>
-                    <div id="contpie">Contacta con<p>Nosotros</p></div>
-                </a></li>
-            </ul>
-        </div>
+        <div id="contenido" style="height:auto">
+
+          <?php
+          $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
+            if ($connection->connect_errno) {
+                printf("Connection failed: %s\n", $mysqli->connect_error);
+                exit();
+            }
+
+            if ($result = $connection->query("SELECT * FROM producto WHERE tipo='accesorio';")) {
+
+                printf("<h2>ACCESORIOS</h2>");
+
+            ?>
+
+            <?php
+
+                while($obj = $result->fetch_object()) {
+                    echo "<div style='background-color:white; display:inline-block; margin-left:32px; text-align:center; margin-bottom:32px'>";
+                    echo "<div><img src='img/".$obj->imagen."'></div>";
+                    echo "<div><h4>".$obj->nombreprod."</h4></div>";
+                    echo "<div><h3>".$obj->precio."€</h3></div>";
+                    echo "<div>Descripcion:<p>".$obj->descripcion."</div>";
+                    echo "<div><a href='editararticulo.php?id=$obj->id_producto'><button type='button' class='btn btn-primary'>Añadir al Carro</button></a></div>";
+                    echo "</div>";
+                }
+
+
+
+                $result->close();
+                unset($obj);
+                unset($connection);
+
+
+            }
+          ?>
+
+
     </div>
   </body>
 </html>
