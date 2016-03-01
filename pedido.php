@@ -17,12 +17,7 @@
 
     if (isset($_POST["email"])) {
 
-      $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
-
-      if ($connection->connect_errno) {
-          printf("Connection failed: %s\n", $connection->connect_error);
-          exit();
-      }
+      include("conexion.php");
 
       $query = $connection->prepare("SELECT * FROM usuario
         WHERE correo=? AND password=md5(?)");

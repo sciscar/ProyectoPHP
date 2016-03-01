@@ -3,12 +3,7 @@ ob_start();
 session_start();
 if (isset($_POST["email"])) {
 
-  $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
-
-  if ($connection->connect_errno) {
-      printf("Connection failed: %s\n", $connection->connect_error);
-      exit();
-  }
+      include("conexion.php");
 }
   if (!empty($_SESSION["permisos"])){
       if ($_SESSION["permisos"]=="user") {
@@ -32,11 +27,7 @@ if (isset($_POST["email"])) {
   </head>
   <body>
       <?php
-      $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
-        if ($connection->connect_errno) {
-            printf("Connection failed: %s\n", $mysqli->connect_error);
-            exit();
-        }
+      include("conexion.php");
 
         if ($result = $connection->query("SELECT * FROM producto;")) {
 

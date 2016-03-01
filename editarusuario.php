@@ -3,12 +3,7 @@ ob_start();
 session_start();
 if (isset($_POST["email"])) {
 
-  $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
-
-  if ($connection->connect_errno) {
-      printf("Connection failed: %s\n", $connection->connect_error);
-      exit();
-  }
+      include("conexion.php");
 }
   if (!empty($_SESSION["permisos"])){
       if ($_SESSION["permisos"]=="user") {
@@ -33,12 +28,7 @@ if (isset($_POST["email"])) {
 
     <?php if (isset($_GET['id'])) {
 
-          $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
-
-            if ($connection->connect_errno) {
-                printf("Conexion fallida: %s\n", $mysqli->connect_error);
-                exit();
-              }
+      include("conexion.php");
                 /* Consultas de selección que devuelven un conjunto de resultados */
                 if ($result = $connection->query("SELECT * FROM usuario WHERE id_usuario=".$_GET['id'])) {
 
@@ -73,12 +63,7 @@ if (isset($_POST["email"])) {
                                 }
                           if (isset($_POST["guardar"])){
 
-                              $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
-
-                                  if ($connection->connect_errno) {
-                                    printf("Conexion fallida: %s\n", $mysqli->connect_error);
-                                    exit();
-                                  }
+      include("conexion.php");
 
                                 $consulta="UPDATE usuario SET id_usuario='".$_POST['id']."', permisos='".$_POST['permiso']."',nombre='".$_POST['nombre']."',apellidos='".$_POST['apellidos']."',correo='".$_POST['correo']."',telefono='".$_POST['telefono']."',direccion='".$_POST['direccion']."' WHERE id_usuario='".$_POST['id']."';";
                                    if ($connection->query($consulta)) {

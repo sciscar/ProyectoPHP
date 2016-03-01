@@ -12,7 +12,7 @@
   </head>
   <body>
     <?php
-    $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
+      include("conexion.php");
     $link=$_GET["id"];
 
     $delete1="DELETE FROM producto WHERE id_producto='$link'";
