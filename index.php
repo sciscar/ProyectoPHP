@@ -24,7 +24,7 @@
           exit();
       }
 
-      $query = $connection->prepare("SELECT * FROM usuario
+      $query = $connection->prepare("SELECT correo, password, permisos FROM usuario
         WHERE correo=? AND password=md5(?)");
 
       $query->bind_param("ss",$_POST["email"],$_POST["password"]);
@@ -32,6 +32,11 @@
       if ($query->execute()) {
 
         $query->store_result();
+        $query->bind_result($correo,$password,$permisos);
+
+        while ($query->fetch()) {
+          $p=$permisos;
+        }
 
           if ($query->num_rows===0) {
 
@@ -42,6 +47,7 @@
           } else {
 
             $_SESSION["email"]=$_POST["email"];
+            $_SESSION["permisos"]=$p;
             $_SESSION["language"]="es";
 
             header("Location: index.php");

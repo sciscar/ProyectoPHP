@@ -73,7 +73,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">0</span></a>
                           <ul class="dropdown-menu dropdown-cart" role="menu">
                             <li class="divider"></li>
-                            <li><a class="text-center" href="">Ver Carro</a></li>
+                            <li><a class="text-center" href="pedido.php">Ver Carro</a></li>
                           </ul>
                       </li>
                   </ul>
@@ -167,7 +167,7 @@
                     echo "<div><h4>".$obj->nombreprod."</h4></div>";
                     echo "<div><h3>".$obj->precio."€</h3></div>";
                     echo "<div>Descripcion:<p>".$obj->descripcion."</div>";
-                    echo "<div><a href='editararticulo.php?id=$obj->id_producto'><button type='button' class='btn btn-primary'>Añadir al Carro</button></a></div>";
+                    echo "<div><a href='addcarrito.php?id=$obj->id_producto'><button type='button' class='btn btn-primary'>Añadir al Carro</button></a></div>";
                     echo "</div>";
                 }
 

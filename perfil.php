@@ -144,9 +144,21 @@
         </div>
       </div>
         <div id="contenido">
+
+
+                <?php
+                    $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
+
+                      if ($connection->connect_errno) {
+                          printf("Conexion fallida: %s\n", $mysqli->connect_error);
+                          exit();
+                        }
+                    if(isset($_SESSION['email'])) {
+                ?>
+
               <form id="perfil" method="post" action="actualizarperfil.php">
               <div class="container-fluid">
-                  <section class="container" style="margin-top: 15px">
+                  <section class="container" style="margin-top: 5px">
                   <div class="container-page">
                     <div class="col-md-6">
 
@@ -245,10 +257,25 @@
 
                     </div>
 
+                    <div>
+                      <h4 style="margin-botton:-10px">Zona Administración</h4>
+                      <a href="listausuarios.php" class="btn btn-warning">Lista Usuarios</a>
+                      <a href="listaarticulos.php" class="btn btn-warning">Lista Articulos</a>
+                      <p>(Solo podras acceder si eres administrador)</p>
+
+                    </div>
+
                   </div>
                 </section>
               </div>
             </form>
+
+            <?php
+                }else {
+                    echo "<h2>Estás accediendo a una página restringida, para ver su contenido debes estar registrado</h2>";
+                }
+            ?>
+
             <div id="boton"><img src="img/logo.png"/></div>
         </div>
         <div id="pie">

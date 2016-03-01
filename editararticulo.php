@@ -1,3 +1,22 @@
+<?php
+ob_start();
+session_start();
+if (isset($_POST["email"])) {
+
+  $connection = new mysqli("localhost", "root", "solidwork", "hookahsolid");
+
+  if ($connection->connect_errno) {
+      printf("Connection failed: %s\n", $connection->connect_error);
+      exit();
+  }
+}
+  if (!empty($_SESSION["permisos"])){
+      if ($_SESSION["permisos"]=="user") {
+        header("Location: index.php");
+      }
+  }
+ ?>
+
 <!DOCTYPE html>
 <html>
   <head>

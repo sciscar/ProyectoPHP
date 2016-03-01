@@ -73,7 +73,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">0</span></a>
                           <ul class="dropdown-menu dropdown-cart" role="menu">
                             <li class="divider"></li>
-                            <li><a class="text-center" href="">Ver Carro</a></li>
+                            <li><a class="text-center" href="pedido.php">Ver Carro</a></li>
                           </ul>
                       </li>
                   </ul>
