@@ -10,6 +10,10 @@ if (isset($_POST["email"])) {
         header("Location: index.php");
       }
   }
+
+  else {
+        header("Location: index.php");
+  }
  ?>
 
 <!DOCTYPE html>

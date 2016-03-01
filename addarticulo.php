@@ -1,3 +1,19 @@
+<?php
+ob_start();
+session_start();
+if (isset($_POST["email"])) {
+
+      include("conexion.php");
+}
+  if (!empty($_SESSION["permisos"])){
+      if ($_SESSION["permisos"]=="user") {
+        header("Location: index.php");
+      }
+  }
+  else {
+        header("Location: index.php");
+  }
+ ?>
 <!DOCTYPE html>
 <html>
   <head>
