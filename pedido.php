@@ -1,3 +1,16 @@
+<?php
+ob_start();
+session_start();
+if (isset($_SESSION["email"])) {
+
+      include("conexion.php");
+}
+
+  else {
+        header("Location: index.php");
+  }
+ ?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -11,210 +24,96 @@
     <link rel="shortcut icon" href="img/icono.png" type="image/png">
   </head>
   <body>
+    <a href='index.php'><button type='button' class='btn btn-danger'>Volver Inicio</button></a>
+    <a href='pedido.php?hacerpedido=yes'><button type='button' class='btn btn-success'>Realizar Pedido</button></a>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+    </thead>
+<?php
 
-  <?php
-    session_start();
+    $user=$_SESSION["email"];
+    $consulta = "SELECT * FROM usuario, cesta, producto WHERE usuario.id_usuario = cesta.id_usuario AND cesta.id_producto = producto.id_producto AND usuario.correo = '".$user."';";
 
-    if (isset($_POST["email"])) {
-
-      include("conexion.php");
-
-      $query = $connection->prepare("SELECT * FROM usuario
-        WHERE correo=? AND password=md5(?)");
-
-      $query->bind_param("ss",$_POST["email"],$_POST["password"]);
-
-      if ($query->execute()) {
-
-        $query->store_result();
-
-          if ($query->num_rows===0) {
-
-            echo "<div class='alert alert-danger' style='text-align: center'>";
-            echo "<strong>Error!</strong> Usuario y/o Contraseña introducidos no validos";
-            echo "</div>";
-
-          } else {
-
-            $_SESSION["email"]=$_POST["email"];
-            $_SESSION["language"]="es";
-
-            header("Location: index.php");
+    if($result = $connection->query($consulta)){
+          if($result->num_rows==0){
+          }else{
+              while($obj=$result->fetch_object()){
+                echo "<tr align='center'>";
+                echo "<td>".$obj->nombreprod."</td>";
+                echo "<td>".$obj->precio."</td>";
+                echo "<td>".$obj->cantidad."</td>";
+                echo "<td><a href='pedido.php?codproducto=".$obj->id_producto."'><button type='button' class='btn btn-danger'>Borrar Producto</button></a></td>";
+                echo "</tr>";
+              }
           }
-      } else {
-        echo "Wrong Query";
-        var_dump($consulta);
-      }
-  }
+    }
+     ?>
+
+</table>
+
+     <?php
+         if(isset($_GET["hacerpedido"])){
+           include("conexion.php");
+           $consultaRecuperarIdUsuario="SELECT id_usuario FROM usuario WHERE correo='".$_SESSION["email"]."'";
+           $result= $connection->query($consultaRecuperarIdUsuario);
+           $fila=$result->fetch_object();
+           $idusuario=$fila->id_usuario;
+           $consultaRecogerCestaUsuario="SELECT cesta.cantidad, producto.precio,producto.id_producto,cesta.id_producto
+            FROM cesta,producto
+            WHERE cesta.id_producto=producto.id_producto AND cesta.id_usuario='".$idusuario."'";
+           if($result2=$connection->query($consultaRecogerCestaUsuario)){
+             if($result2->num_rows==0){
+               echo "No hay productos en la cesta para realizar el pedido";
+             }else{
+               $consultaPedido="INSERT INTO `pedido`(`id_usuario`, `fecha`, `preciototal`) VALUES ($idusuario,CURRENT_TIMESTAMP(),0)";
+               $result= $connection->query($consultaPedido);
+               $consultaRecuperarMaxIdPedido="SELECT *  FROM pedido ORDER BY id_pedido DESC LIMIT 1;";
+               $result3= $connection->query($consultaRecuperarMaxIdPedido);
+               $idNuevoPedido=0;
+               while($f=$result3->fetch_object()){
+                 $idNuevoPedido=$f->id_pedido;
+               }
+               echo $idNuevoPedido;
+               $precioTotalPedido=0;
+               while($fila=$result2->fetch_object()){
+                 $consultaInsertDetallesLineaPedido="INSERT INTO `contiene`(`cantidad`, `id_pedido`, `id_producto`)
+                  VALUES (".$fila->cantidad.",$idNuevoPedido,".$fila->id_producto.")";
+                 $connection->query($consultaInsertDetallesLineaPedido);
+                 $cant=$fila->cantidad;
+                 $precio=$fila->precio;
+                 $precioTotalPedido= $precioTotalPedido +($cant*$precio);
+               }
+               $connection->query("UPDATE pedido SET preciototal = $precioTotalPedido WHERE id_pedido=$idNuevoPedido");
+               $connection->query("DELETE FROM cesta WHERE id_usuario=$idusuario");
+               header("Location: historialpedidos.php");
+             }
+           }else{
+             echo $connection->error;
+           }
+         }
+     ?>
+
+     <?php
+         if(isset($_GET["codproducto"])){
+           $idproducto=$_GET["codproducto"];
+           include("conexion.php");
+           $consultaRecuperarIdUsuario="SELECT id_usuario FROM usuario WHERE correo='".$_SESSION["email"]."'";
+           $result= $connection->query($consultaRecuperarIdUsuario);
+           $fila=$result->fetch_object();
+           $idusuario=$fila->id_usuario;
+           $consultaBorrarCesta="DELETE FROM cesta WHERE id_producto=$idproducto
+           AND id_usuario=$idusuario";
+           $connection->query($consultaBorrarCesta);
+           echo  $connection->error;
+           echo  $consultaBorrarCesta;
+           header("Location: pedido.php");
+         }
+      ?>
 
 
-  ?>
-
-    <div id="main">
-        <div id="cabecera">
-            <div id="logo"><img src="img/logo.png"/></div>
-            <div>
-            <nav class="navbar navbar-default">
-              <div class="container-fluid">
-                <div class="navbar-header">
-                  <a class="navbar-brand" href="index.php">Inicio</a>
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                  <ul class="nav navbar-nav">
-                    <li><a href="cachimba.php">Cachimbas</a></li>
-                    <li><a href="carbones.php">Carbones</a></li>
-                    <li><a href="accesorios.php">Accesorios</a></li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">0</span></a>
-                          <ul class="dropdown-menu dropdown-cart" role="menu">
-                            <li class="divider"></li>
-                            <li><a class="text-center" href="">Ver Carro</a></li>
-                          </ul>
-                      </li>
-                  </ul>
-
-<?php if (!isset($_SESSION["email"])) : ?>
-
-<form id="login" class="navbar-form navbar-right" role="form" method="post" action="index.php">
-  <div class="input-group">
-    <input id="email" type="email" class="form-control" name="email" placeholder="Email">
-  </div>
-  <div class="input-group">
-    <input id="password" type="password" class="form-control" name="password" placeholder="Contraseña">
-  </div>
-  <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>
-  <a href="registro.php" class="btn btn-primary" role="button">Registrate</a>
-</form>
-
-<?php else: ?>
-
-<ul class="nav navbar-nav navbar-right">
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <strong><?php echo $_SESSION["email"]; ?></strong>
-        <span class="glyphicon glyphicon-chevron-down"></span>
-      </a>
-        <ul class="dropdown-menu">
-          <li>
-          <div class="navbar-login">
-              <div class="row">
-                  <div class="col-lg-12">
-                      <p class="text-left">
-                          <a href="perfil.php" class="btn btn-primary btn-block">Perfil</a>
-                      </p>
-                  </div>
-              </div>
-          </div>
-          </li>
-          <li>
-          <div class="navbar-login">
-              <div class="row">
-                  <div class="col-lg-12">
-                      <p class="text-left">
-                          <a href="historialpedidos.php" class="btn btn-success btn-block">Pedidos</a>
-                      </p>
-                  </div>
-              </div>
-          </div>
-          </li>
-            <li class="divider"></li>
-              <li>
-                <div class="navbar-login navbar-login-session">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <p>
-                          <a href="logout.php" class="btn btn-danger btn-block">Cerrar Sesion</a>
-                      </p>
-                  </div>
-                  </div>
-                </div>
-              </li>
-          </ul>
-        </li>
-      </ul>
-
-<?php endif ?>
-                  </div>
-                </div>
-              </nav>
-        </div>
-      </div>
-        <div id="contenido">
-            <h2>PRODUCTOS</h2>
-            <ul id="contenido1">
-                <li><a href="cachimba.php"><div>
-                <img src="img/hookah.png" width="120px" height="120px"/>
-                </div>
-                    <div><a href="cachimba.php">
-                        <p id="headcont">CACHIMBAS</p>
-                        <p id="bodycont">Primeras marcas en cachimbas de alta calidad</p>
-                    </div></a>
-                </li>
-                <li><a href="carbones.php"><div>
-                <img src="img/carbon.jpg"/ width="120px" height="120px">
-                </div>
-                    <div>
-                        <p id="headcont">CARBONES</p>
-                        <p id="bodycont">Carbones naturales de gran calidad</p>
-                    </div></a>
-                </li>
-                <li><a href="accesorios.php"><div>
-                <img src="img/cazoleta.png"/ width="120px" height="120px">
-                </div>
-                    <div>
-                        <p id="headcont">ACCESORIOS</p>
-                        <p id="bodycont">Mangueras, cazoletas, pinzas, hornillos, etc..</p>
-                    </div></a>
-                </li>
-            </ul>
-            <div id="boton"><img src="img/logo.png"/></div>
-        </div>
-        <div id="pie">
-            <ul id="listapie">
-                <li><a href="index.php">
-                    <div id="iconpie">
-                    <img src="img/productos.png">
-                    </div>
-                    <div id="contpie">Productos<p> </p></div>
-                </a></li>
-                <li><a href="info.php">
-                    <div id="iconpie">
-                    <img src="img/informacion.png">
-                    </div>
-                    <div id="contpie">Información<p> </p></div>
-                </a></li>
-                <li>
-                    <div id="iconpie">
-                    <img src="img/entrega.png">
-                    </div>
-                    <div id="contpie">Entrega en<br/><p>24/48 Horas</p></div>
-                </li>
-                <li>
-                    <div id="iconpie">
-                    <img src="img/envio.png">
-                    </div>
-                    <div id="contpie">Envio Gratis<p>desde 75€</p></div>
-                </li>
-                <li>
-                    <div id="iconpie">
-                    <img src="img/pago.png">
-                    </div>
-                    <div id="contpie">Pago 100%<p>Seguro</p></div>
-                </li>
-                <li>
-                    <div id="iconpie">
-                    <img src="img/calidad.png">
-                    </div>
-                    <div id="contpie">Calidad<p>Asegurada</p></div>
-                </li>
-                <li><a href="contacto.php">
-                    <div id="iconpie">
-                    <img src="img/contacta.png">
-                    </div>
-                    <div id="contpie">Contacta con<p>Nosotros</p></div>
-                </a></li>
-            </ul>
-        </div>
-    </div>
   </body>
-</html>
+  </html>

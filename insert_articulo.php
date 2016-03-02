@@ -32,7 +32,7 @@ if (isset($_POST["email"])) {
       $db_name="hookahsolid"; //my db name
     }
         //Compruebo que he recibido el parámetro por la query.
-            $link = mysql_connect($db_host,$user,$db_password)or die('No se pudo conectar: ' . mysql_error());
+            $link = mysql_connect($db_host,$db_user,$db_password)or die('No se pudo conectar: ' . mysql_error());
             mysql_select_db($db_name) or die('No se pudo seleccionar la base de datos');
 
             $insert = "INSERT INTO producto VALUE(NULL,'".$_POST['nombreprod']."'".","."'".$_POST['tipo']."'".","."'".$_POST['precio']."'".","."'".$_POST['descripcion']."'".","."'".$_POST['marca']."'".",NULL)";

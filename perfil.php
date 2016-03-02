@@ -63,13 +63,39 @@
                     <li><a href="cachimba.php">Cachimbas</a></li>
                     <li><a href="carbones.php">Carbones</a></li>
                     <li><a href="accesorios.php">Accesorios</a></li>
+
+                    <?php if(isset($_SESSION["email"])) : ?>
+
                       <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">0</span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">
+
+                          <?php
+                          include("conexion.php");
+                          $user=$_SESSION["email"];
+                          $consulta = "SELECT SUM(cesta.cantidad) AS total FROM usuario, cesta WHERE usuario.id_usuario = cesta.id_usuario AND usuario.correo = '".$user."';";
+                          if($result = $connection->query($consulta)){
+                                $total=0;
+                                if($result->num_rows==0){
+                                }else{
+                                    while($fila=$result->fetch_object()){
+                                        $total=$total+$fila->total;
+                                    }
+                                }
+                                echo "$total";
+                          }
+                           ?>
+
+                        </span></a>
                           <ul class="dropdown-menu dropdown-cart" role="menu">
                             <li class="divider"></li>
                             <li><a class="text-center" href="">Ver Carro</a></li>
                           </ul>
                       </li>
+
+                    <?php else : ?>
+
+                    <?php endif ?>
+
                   </ul>
 
 <?php if (!isset($_SESSION["email"])) : ?>

@@ -64,13 +64,39 @@
                     <li><a href="cachimba.php">Cachimbas</a></li>
                     <li><a href="carbones.php">Carbones</a></li>
                     <li><a href="accesorios.php">Accesorios</a></li>
+
+                    <?php if(isset($_SESSION["email"])) : ?>
+
                       <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">0</span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">
+
+                          <?php
+                          include("conexion.php");
+                          $user=$_SESSION["email"];
+                          $consulta = "SELECT SUM(cesta.cantidad) AS total FROM usuario, cesta WHERE usuario.id_usuario = cesta.id_usuario AND usuario.correo = '".$user."';";
+                          if($result = $connection->query($consulta)){
+                                $total=0;
+                                if($result->num_rows==0){
+                                }else{
+                                    while($fila=$result->fetch_object()){
+                                        $total=$total+$fila->total;
+                                    }
+                                }
+                                echo "$total";
+                          }
+                           ?>
+
+                        </span></a>
                           <ul class="dropdown-menu dropdown-cart" role="menu">
                             <li class="divider"></li>
                             <li><a class="text-center" href="pedido.php">Ver Carro</a></li>
                           </ul>
                       </li>
+
+                    <?php else : ?>
+
+                    <?php endif ?>
+
                   </ul>
 
 <?php if (!isset($_SESSION["email"])) : ?>
@@ -142,7 +168,7 @@
         <div id="contenido" style="height:auto">
 
           <?php
-          
+
       include("conexion.php");
 
             if ($result = $connection->query("SELECT * FROM producto WHERE tipo='accesorio';")) {
@@ -159,7 +185,17 @@
                     echo "<div><h4>".$obj->nombreprod."</h4></div>";
                     echo "<div><h3>".$obj->precio."€</h3></div>";
                     echo "<div>Descripcion:<p>".$obj->descripcion."</div>";
-                    echo "<div><a href='editararticulo.php?id=$obj->id_producto'><button type='button' class='btn btn-primary'>Añadir al Carro</button></a></div>";
+
+                    if (isset($_SESSION["email"])) {
+
+                    echo "<div><a href='addcarrito.php?id=$obj->id_producto'><button type='button' class='btn btn-primary'>Añadir al Carro</button></a></div>";
+
+                  } else {
+
+                    echo "<div><button type='button' class='btn btn-primary'>Añadir al Carro</button></div>";
+
+                  }
+
                     echo "</div>";
                 }
 
