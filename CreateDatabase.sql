@@ -1,10 +1,10 @@
-DROP DATABASE IF EXISTS HookahSolid;
+DROP DATABASE IF EXISTS hookahsolid;
 
-CREATE DATABASE HookahSolid;
+CREATE DATABASE hookahsolid;
 
-USE HookahSolid;
+USE hookahsolid;
 
-CREATE TABLE USUARIO (
+CREATE TABLE usuario (
 	id_usuario INT NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(50) NOT NULL,
 	apellidos VARCHAR(80) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE USUARIO (
 	PRIMARY KEY(id_usuario)
 );
 
-CREATE TABLE PRODUCTO (
+CREATE TABLE producto (
 	id_producto INT NOT NULL AUTO_INCREMENT,
 	nombreprod VARCHAR(80) NOT NULL,
 	tipo VARCHAR(50) NOT NULL,
@@ -28,30 +28,30 @@ CREATE TABLE PRODUCTO (
 	PRIMARY KEY(id_producto)
 );
 
-CREATE TABLE PEDIDO (
+CREATE TABLE pedido (
 	id_pedido INT NOT NULL AUTO_INCREMENT,
 	id_usuario INT NOT NULL,
 	fecha DATE NOT NULL,
 	preciototal INT NOT NULL,
 	PRIMARY KEY(id_pedido),
-	FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario)
+	FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
 
-CREATE TABLE CESTA (
+CREATE TABLE cesta (
 	id_usuario INT NOT NULL,
 	id_producto INT NOT NULL,
 	cantidad INT NOT NULL,
-	FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario),
-	FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto),
+	FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+	FOREIGN KEY (id_producto) REFERENCES producto(id_producto),
 	PRIMARY KEY (id_usuario, id_producto)
 );
 
-CREATE TABLE CONTIENE (
+CREATE TABLE contiene (
 	id_producto INT NOT NULL,
 	id_pedido INT NOT NULL,
 	cantidad INT NOT NULL,
-	FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto),
-	FOREIGN KEY (id_pedido) REFERENCES PEDIDO(id_pedido),
+	FOREIGN KEY (id_producto) REFERENCES producto(id_producto),
+	FOREIGN KEY (id_pedido) REFERENCES pedido(id_pedido),
 	PRIMARY KEY (id_producto, id_pedido)
 );
 
