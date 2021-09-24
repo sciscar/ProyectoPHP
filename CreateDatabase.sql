@@ -9,7 +9,7 @@ CREATE TABLE usuario (
 	nombre VARCHAR(50) NOT NULL,
 	apellidos VARCHAR(80) NOT NULL,
 	correo VARCHAR(80) UNIQUE NOT NULL,
-	password VARCHAR(20) NOT NULL,
+	password VARCHAR(40) NOT NULL,
 	direccion VARCHAR(200) NOT NULL,
 	ciudad VARCHAR(50) NOT NULL,
 	telefono VARCHAR(9),
